@@ -1,0 +1,60 @@
+.maincontainer {
+  width: 75vw;
+  margin: auto;
+}
+
+.maincontainer form {
+  width: 60%;
+  /* background-color: rgb(215, 240, 240); */
+  margin: auto;
+  padding: 10px;
+}
+
+.maincontainer div {
+  margin-bottom: 12px;
+}
+
+.btn {
+  padding: 8px 12px;
+  border-radius: 3px;
+  color: white;
+  background-color: rgba(223, 193, 59, 0.87);
+  border: none;
+  margin-left: 5px;
+  transition: all 1s ease-out;
+}
+.btn:hover,
+.btn:active {
+  transform: scale(1.1, 1.1);
+}
+
+.maincontainer select {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 3px;
+}
+.maincontainer input {
+  width: 95.6%;
+  padding: 9px 12px;
+  border-radius: 3px;
+  border: 1px solid grey;
+}
+
+.c1,
+.c2 {
+  display: flex;
+  flex-direction: column;
+  width: 49%;
+}
+
+.categoryContainer {
+  display: flex;
+  justify-content: space-between;
+}
+img {
+  margin: 2px;
+}
+
+.highlightContainer input {
+  width: 50%;
+}
