@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Protected from './pages/Protected';
 import Submit from './pages/Submit';
-
+import Products from './pages/Products';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -20,6 +20,14 @@ const router = createBrowserRouter([
     element: (
       <Protected>
         <Submit />
+      </Protected>
+    ),
+  },
+  {
+    path: '/products',
+    element: (
+      <Protected>
+        <Products />
       </Protected>
     ),
   },

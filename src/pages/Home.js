@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Home.module.css';
 import { useState, useEffect, useRef } from 'react';
 import HttpClient from '../utils/HttpClient';
@@ -16,6 +16,7 @@ const Home = () => {
   const [selectedCity, setSelectedCity] = useState();
   const [selectedCat, setSelectedCat] = useState();
   const [selectedSubCat, setSelectedSubCat] = useState();
+  const [loading, setLoading] = useState(false);
 
   // ~ Refs
   const pdtName = useRef();
@@ -55,6 +56,7 @@ const Home = () => {
 
   //! Image uploads
   const fileHandler = async e => {
+    setLoading(true);
     const selectedFiles = Array.from(e.target.files);
 
     const sendImages = async x => {
@@ -65,13 +67,15 @@ const Home = () => {
         'POST',
         data
       );
+      // console.log(result.url);
       setImages(prevstate => [...prevstate, result.url]);
     };
     e.target.value = '';
-
     for (let i = 0; i < selectedFiles.length; i++) {
       await sendImages(i);
     }
+    setLoading(false);
+    // setTimeout(() => setLoading(false), 5000);
   };
 
   // ~ Selected city
@@ -143,12 +147,29 @@ const Home = () => {
   return (
     <>
       <div className={styles.maincontainer}>
-        <h2>Home Page</h2>
-        <button className={styles.btn} onClick={logoutHandler}>
+        <br />
+        <h1>Home Page</h1>
+        <p>
+          In publishing and graphic design, Lorem ipsum is a placeholder text
+          commonly used to demonstrate the visual form of a document or a
+          typeface without relying on meaningful content. Lorem ipsum may be
+          used as a placeholder before final copy is available.
+        </p>
+
+        <button
+          className={`${styles.btn} ${styles.submit}`}
+          onClick={logoutHandler}
+        >
           Logout
         </button>
+        <button className={`${styles.btn} ${styles.submit}`}>
+          <Link id={styles.anchor} to="/products">
+            Products List
+          </Link>
+        </button>
+        <hr />
         <form>
-          <h3>Add a Product</h3>
+          <h1>Add a Product</h1>
           <div className={styles.categoryContainer}>
             {/* Category */}
             <div className={styles.c1}>
@@ -217,6 +238,7 @@ const Home = () => {
             <br></br>
             <input id="pdtprice" type="number" ref={pdtPrice} />
           </div>
+          {/* IMAGES */}
           <div>
             <label htmlFor="images">Select Images:</label>
             <input
@@ -227,6 +249,7 @@ const Home = () => {
               accept="image/png ,image/jpeg ,image/jpg ,image/webp"
               onChange={fileHandler}
             />
+            {loading && <p>Loading images...</p>}
             <div className="images">
               {images &&
                 images.map((url, index) => {

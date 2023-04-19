@@ -18,7 +18,7 @@
   padding: 8px 12px;
   border-radius: 3px;
   color: white;
-  background-color: rgba(223, 193, 59, 0.87);
+  background-color: #fab005;
   border: none;
   margin: 10px;
   transition: all 0.2s ease-out;
@@ -37,7 +37,7 @@
   border-radius: 3px;
 }
 .maincontainer input {
-  width: 95.6%;
+  width: 100.5%;
   padding: 9px 12px;
   border-radius: 3px;
   border: 1px solid grey;
@@ -60,4 +60,25 @@ img {
 
 .highlightContainer input {
   width: 50%;
+}
+#anchor {
+  text-decoration: none;
+  color: inherit;
+}
+.maincontainer p {
+  font-size: 22px;
+}
+.maincontainer h1 {
+  font-size: 32px;
+}
+
+hr {
+  border: 0.3px solid #495057;
+  border-style: groove;
+}
+
+.productContainer {
+  width: 1200px;
+  text-align: center;
+  margin: 0 auto;
 }

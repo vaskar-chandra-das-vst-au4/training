@@ -45,7 +45,9 @@ const Login = () => {
 
   return (
     <form onSubmit={submitHandler} className={styles.logincontainer}>
-      <h1>Enter details</h1>
+      <br />
+      <h1>Login Credentials</h1>
+      <br />
       <label htmlFor="email">Emaill</label>
       {emailError && <p>Email must contain "@"</p>}
       <input
