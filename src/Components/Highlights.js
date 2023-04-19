@@ -2,8 +2,11 @@ import { useState } from 'react';
 import styles from '../pages/Home.module.css';
 import HttpClient from '../utils/HttpClient';
 import { useNavigate } from 'react-router-dom';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 const Highlights = props => {
+  const [listRef] = useAutoAnimate();
+
   const [input, setInputs] = useState([{ highlightText: '' }]);
   const navigate = useNavigate();
   // ! Register stroke
@@ -81,28 +84,31 @@ const Highlights = props => {
   };
   return (
     <>
-      {input.map((item, index) => {
-        return (
-          <div key={index} className={styles.highlightContainer}>
-            <input
-              id={styles.highlights}
-              type="text"
-              name="highlightText"
-              value={item.highlightText}
-              onChange={e => registerTextHandler(e, index)}
-            />
-            {input.length > 1 && removeBtn(index)}
-            {input.length - 1 === index && addBtn}
-          </div>
-        );
-      })}
-      <button
-        onClick={submitHandler}
-        className={`${styles.btn} ${styles.submit}`}
-        type="submit"
-      >
-        Submit
-      </button>
+      <div ref={listRef}>
+        {input.map((item, index) => {
+          return (
+            <div key={index} className={styles.highlightContainer}>
+              <input
+                // className={styles['text-focus-in']}
+                id={styles.highlights}
+                type="text"
+                name="highlightText"
+                value={item.highlightText}
+                onChange={e => registerTextHandler(e, index)}
+              />
+              {input.length > 1 && removeBtn(index)}
+              {input.length - 1 === index && addBtn}
+            </div>
+          );
+        })}
+        <button
+          onClick={submitHandler}
+          className={`${styles.btn} ${styles.submit}`}
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
     </>
   );
 };

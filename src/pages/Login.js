@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks';
 import HttpClient from '../utils/HttpClient';
 import { useState } from 'react';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -17,6 +19,7 @@ const Login = () => {
     handler: passwordHandler,
   } = useInput(password => password.trim().length < 5);
 
+  const [listRef] = useAutoAnimate();
   const navigate = useNavigate();
 
   const submitHandler = async e => {
@@ -44,11 +47,15 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={submitHandler} className={styles.logincontainer}>
+    <form
+      ref={listRef}
+      onSubmit={submitHandler}
+      className={`${styles.logincontainer} ${styles['puff-in-center']}`}
+    >
       <br />
       <h1>Login Credentials</h1>
       <br />
-      <label htmlFor="email">Emaill</label>
+      <label htmlFor="email">Email</label>
       {emailError && <p>Email must contain "@"</p>}
       <input
         onChange={emailHandler}
@@ -59,7 +66,7 @@ const Login = () => {
       />
 
       <label htmlFor="password">Password</label>
-      {passwordError && <p>Password must contain more than 6 character</p>}
+      {passwordError && <p>Password must contain more than 4 character</p>}
       <input
         onChange={passwordHandler}
         value={password}
@@ -67,12 +74,14 @@ const Login = () => {
         id="password"
         type="password"
       />
-      <button
-        disabled={!email.includes('@') || password.trim().length < 5}
-        type="submit"
-      >
-        {!isLoading ? 'Login' : 'Loading...'}
-      </button>
+      <div className={styles.loginBtn}>
+        <button
+          disabled={!email.includes('@') || password.trim().length < 5}
+          type="submit"
+        >
+          {!isLoading ? 'Login' : 'Loading...'}
+        </button>
+      </div>
     </form>
   );
 };

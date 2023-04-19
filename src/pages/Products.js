@@ -74,7 +74,7 @@ const Products = () => {
   };
   return (
     <>
-      <div className={styles.productContainer}>
+      <div className={`${styles.productContainer} ${styles['text-focus-in']}`}>
         <br />
         <br />
         <h1>Products Page</h1>

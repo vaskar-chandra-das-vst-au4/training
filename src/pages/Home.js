@@ -3,6 +3,7 @@ import styles from './Home.module.css';
 import { useState, useEffect, useRef } from 'react';
 import HttpClient from '../utils/HttpClient';
 import Highlights from '../Components/Highlights';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 const Home = () => {
   // ~ states
@@ -21,6 +22,8 @@ const Home = () => {
   // ~ Refs
   const pdtName = useRef();
   const pdtPrice = useRef();
+
+  const [listRef] = useAutoAnimate();
 
   const navigate = useNavigate();
 
@@ -148,8 +151,8 @@ const Home = () => {
     <>
       <div className={styles.maincontainer}>
         <br />
-        <h1>Home Page</h1>
-        <p>
+        <h1 className={styles['tracking-in-expand']}>Home Page</h1>
+        <p className={styles['text-focus-in']}>
           In publishing and graphic design, Lorem ipsum is a placeholder text
           commonly used to demonstrate the visual form of a document or a
           typeface without relying on meaningful content. Lorem ipsum may be
@@ -157,18 +160,20 @@ const Home = () => {
         </p>
 
         <button
-          className={`${styles.btn} ${styles.submit}`}
+          className={`${styles.btn} ${styles.submit} ${styles['tracking-in-expand']}`}
           onClick={logoutHandler}
         >
           Logout
         </button>
-        <button className={`${styles.btn} ${styles.submit}`}>
+        <button
+          className={`${styles.btn} ${styles.submit} ${styles['tracking-in-expand']}`}
+        >
           <Link id={styles.anchor} to="/products">
             Products List
           </Link>
         </button>
-        <hr />
-        <form>
+        <hr className={styles['text-focus-in']} />
+        <form className={styles['text-focus-in']}>
           <h1>Add a Product</h1>
           <div className={styles.categoryContainer}>
             {/* Category */}
@@ -250,7 +255,7 @@ const Home = () => {
               onChange={fileHandler}
             />
             {loading && <p>Loading images...</p>}
-            <div className="images">
+            <div className="images" ref={listRef}>
               {images &&
                 images.map((url, index) => {
                   return (
