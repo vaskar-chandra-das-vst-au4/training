@@ -1,0 +1,10 @@
+.container {
+  width: 500px;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.container h1 {
+  color: rgb(135, 179, 69);
+}

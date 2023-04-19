@@ -20,8 +20,11 @@
   color: white;
   background-color: rgba(223, 193, 59, 0.87);
   border: none;
-  margin-left: 5px;
-  transition: all 1s ease-out;
+  margin: 10px;
+  transition: all 0.2s ease-out;
+}
+.submit {
+  margin-left: 0;
 }
 .btn:hover,
 .btn:active {

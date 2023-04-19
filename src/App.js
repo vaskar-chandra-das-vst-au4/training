@@ -1,9 +1,9 @@
-import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Protected from './pages/Protected';
+import Submit from './pages/Submit';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +15,14 @@ const router = createBrowserRouter([
     ),
   },
   { path: '/login', element: <Login /> },
+  {
+    path: '/onSubmit',
+    element: (
+      <Protected>
+        <Submit />
+      </Protected>
+    ),
+  },
 ]);
 
 function App() {

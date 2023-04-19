@@ -1,15 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './Home.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import HttpClient from '../utils/HttpClient';
 import Highlights from '../Components/Highlights';
 
 const Home = () => {
+  // ~ states
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState([]);
   const [buisness, setBuisness] = useState([]);
   const [country, setCountry] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
+
+  const [selectedBuisness, setSelectedBuisness] = useState();
+  const [selectedCity, setSelectedCity] = useState();
+  const [selectedCat, setSelectedCat] = useState();
+  const [selectedSubCat, setSelectedSubCat] = useState();
+
+  // ~ Refs
+  const pdtName = useRef();
+  const pdtPrice = useRef();
 
   const navigate = useNavigate();
 
@@ -17,12 +27,15 @@ const Home = () => {
   const logoutHandler = e => {
     e.preventDefault();
     localStorage.removeItem('login');
+    localStorage.removeItem('id');
+    localStorage.removeItem('token');
     navigate('/login');
   };
 
   //! Fetch sub category
   const dropdownHandler = async e => {
     if (e.target.value === 'default') return setSubCategory([]);
+    setSelectedCat(+e.target.value);
     const res = await HttpClient.requestData(
       'subCategory/dependency-subcategory',
       'POST',
@@ -61,6 +74,18 @@ const Home = () => {
     }
   };
 
+  // ~ Selected city
+  const cityHandler = e => {
+    setSelectedCity(+e.target.value);
+  };
+  // ~ Selected buisness
+  const buisnessHandler = e => {
+    setSelectedBuisness(+e.target.value);
+  };
+  // ~ Subcategory Handler
+  const subCategoryHandler = e => {
+    setSelectedSubCat(+e.target.value);
+  };
   useEffect(() => {
     //! Fetch category
     const getCategory = async () => {
@@ -82,8 +107,12 @@ const Home = () => {
         'POST',
         { owner_id: +id }
       );
-      const bnames = res.allData.map(item => item.businessName);
-      setBuisness(oldState => [...oldState, ...bnames]);
+      // console.log(res.allData);
+      const buisness = res.allData.map(item => ({
+        name: item.businessName,
+        id: item.id,
+      }));
+      setBuisness(oldState => [...oldState, ...buisness]);
     };
 
     // ! Fetch city
@@ -99,6 +128,18 @@ const Home = () => {
     // Promise.allSettled([getCategory(), getBuisness(), getCity()]);
   }, []);
 
+  // ~ Passing parent data
+  const passParentData = () => {
+    return {
+      category: selectedCat,
+      subCategory: selectedSubCat,
+      buisness: selectedBuisness,
+      city: selectedCity,
+      productName: pdtName.current.value,
+      productPrice: +pdtPrice.current.value,
+      images,
+    };
+  };
   return (
     <>
       <div className={styles.maincontainer}>
@@ -107,7 +148,7 @@ const Home = () => {
           Logout
         </button>
         <form>
-          <h3>Primary Form</h3>
+          <h3>Add a Product</h3>
           <div className={styles.categoryContainer}>
             {/* Category */}
             <div className={styles.c1}>
@@ -124,47 +165,57 @@ const Home = () => {
             {/* subcategory */}
             <div className={styles.c2}>
               <label htmlFor="category2">Sub Category</label>
-              <select id="category2">
+              <select id="category2" onChange={subCategoryHandler}>
                 <option>Select Sub Category</option>
                 {subCategory.map(item => (
-                  <option key={item.name}>{item.name}</option>
+                  <option key={item.name} value={item.id}>
+                    {item.name}
+                  </option>
                 ))}
               </select>
             </div>
           </div>
+          {/* BUISNESS */}
           <div>
             <label className={styles.leftlabel} htmlFor="buisness">
               Buisness
             </label>
             <br></br>
-            <select id="buisness">
+            <select id="buisness" onChange={buisnessHandler}>
               <option>Select Sub Category</option>
               {buisness.map((item, index) => (
-                <option key={index}>{item}</option>
+                <option key={index} value={item.id}>
+                  {item.name}
+                </option>
               ))}
             </select>
           </div>
+          {/* CITY */}
           <div>
             <label className={styles.leftlabel} htmlFor="city">
               City
             </label>
             <br></br>
-            <select id="city">
+            <select id="city" onChange={cityHandler}>
               <option>Select city</option>
               {country.map((n, i) => (
-                <option key={i}>{n}</option>
+                <option key={i} value={i}>
+                  {n}
+                </option>
               ))}
             </select>
           </div>
+          {/* PRODUCT NAME */}
           <div>
             <label htmlFor="pdtname">Product Name</label>
             <br></br>
-            <input id="pdtname" type="text" />
+            <input id="pdtname" type="text" ref={pdtName} />
           </div>
+          {/* PRODUCT PRICE */}
           <div>
             <label htmlFor="pdtprice">Product Price</label>
             <br></br>
-            <input id="pdtprice" type="number" />
+            <input id="pdtprice" type="number" ref={pdtPrice} />
           </div>
           <div>
             <label htmlFor="images">Select Images:</label>
@@ -194,7 +245,7 @@ const Home = () => {
           </div>
           <label>Highlights</label>
           <br></br>
-          <Highlights />
+          <Highlights parentData={passParentData} />
         </form>
       </div>
     </>

@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import styles from '../pages/Home.module.css';
+import HttpClient from '../utils/HttpClient';
+import { useNavigate } from 'react-router-dom';
+
 const Highlights = props => {
   const [input, setInputs] = useState([{ highlightText: '' }]);
-
+  const navigate = useNavigate();
   // ! Register stroke
   const registerTextHandler = (e, index) => {
     const { name, value } = e.target;
@@ -39,9 +42,42 @@ const Highlights = props => {
       Remove
     </button>
   );
-  const submitHandler = e => {
+  const submitHandler = async e => {
     e.preventDefault();
-    console.log('clicked');
+    const id = localStorage.getItem('id');
+    const {
+      category,
+      subCategory,
+      buisness,
+      city,
+      productName,
+      productPrice,
+      images,
+    } = props.parentData();
+
+    let data = {
+      name: productName,
+      price: productPrice,
+      cat_id: category,
+      sub_cat_id: subCategory,
+      owner_id: id,
+      bussiness_id: buisness,
+      img: images,
+      highlight: input,
+      mode: 'Best Offer',
+      city_id: city,
+      product_status: true,
+    };
+    console.log(data);
+    let res = await HttpClient.requestData('product/add-product', 'POST', data);
+
+    if (res && res.status) {
+      console.log(res);
+      // navigate(0); // Reload
+      navigate('/onSubmit');
+    } else {
+      alert(res.error);
+    }
   };
   return (
     <>
@@ -60,10 +96,15 @@ const Highlights = props => {
           </div>
         );
       })}
-      <button onClick={submitHandler} className={styles.btn} type="submit">
+      <button
+        onClick={submitHandler}
+        className={`${styles.btn} ${styles.submit}`}
+        type="submit"
+      >
         Submit
       </button>
     </>
   );
 };
 export default Highlights;
+// onClick = { submitHandler };

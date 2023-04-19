@@ -2,7 +2,9 @@ import styles from './Login.module.css';
 import { useNavigate } from 'react-router-dom';
 import useInput from '../hooks';
 import HttpClient from '../utils/HttpClient';
+import { useState } from 'react';
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const {
     input: email,
     hasError: emailError,
@@ -18,6 +20,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const submitHandler = async e => {
+    setIsLoading(true);
     console.log(email, password);
     e.preventDefault();
     if (!emailError && !passwordError) {
@@ -31,10 +34,12 @@ const Login = () => {
         localStorage.setItem('login', true);
         localStorage.setItem('id', response.data.id);
         localStorage.setItem('token', response.data.token);
+
         navigate('/');
       } else {
         alert(response.error);
       }
+      setIsLoading(false);
     }
   };
 
@@ -64,7 +69,7 @@ const Login = () => {
         disabled={!email.includes('@') || password.trim().length < 5}
         type="submit"
       >
-        Login
+        {!isLoading ? 'Login' : 'Loading...'}
       </button>
     </form>
   );
