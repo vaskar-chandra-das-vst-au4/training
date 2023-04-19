@@ -1,11 +1,5 @@
 import './App.css';
-import {
-  // BrowserRouter,
-  // Routes,
-  // Route,
-  createBrowserRouter,
-  RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
