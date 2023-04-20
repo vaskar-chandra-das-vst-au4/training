@@ -43,11 +43,11 @@ const Home = () => {
   //! Fetch sub category
   const dropdownHandler = async e => {
     if (e.target.value === 'default') return setSubCategory([]);
-    setSelectedCat(+e.target.value);
+    setSelectedCat(e.target.value.split('-')[1]);
     const res = await HttpClient.requestData(
       'subCategory/dependency-subcategory',
       'POST',
-      { category_id: +e.target.value }
+      { category_id: +e.target.value.split('-')[0] }
     );
     setSubCategory([...res.data]);
     // console.log(res.data);
@@ -74,7 +74,7 @@ const Home = () => {
         'POST',
         data
       );
-      console.log(result.url);
+      // console.log(result.url);
       setImages(prevstate => [...prevstate, result.url]);
     };
     e.target.value = '';
@@ -151,16 +151,16 @@ const Home = () => {
       images,
     };
   };
+
   return (
     <>
       <div className={styles.maincontainer}>
         <br />
         <h1 className={styles['tracking-in-expand']}>Home</h1>
         <p className={styles['text-focus-in']}>
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. Lorem ipsum may be
-          used as a placeholder before final copy is available.
+          This is just a demo application in which user can login and logout
+          their account, aslo products can be added using the below form, it has
+          product section where all added products will be reflected.
         </p>
 
         <button
@@ -191,7 +191,7 @@ const Home = () => {
               <select id="category1" onChange={dropdownHandler}>
                 <option value="default">Select Category</option>
                 {category.map(c => (
-                  <option key={c.id} value={c.id}>
+                  <option key={c.id} value={`${c.id}-${c.name}`}>
                     {c.name}
                   </option>
                 ))}

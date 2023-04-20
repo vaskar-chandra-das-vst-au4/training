@@ -63,7 +63,7 @@ const Highlights = props => {
     let data = {
       name: productName,
       price: productPrice,
-      cat_id: category,
+      category,
       sub_cat_id: subCategory,
       owner_id: id,
       bussiness_id: buisness,
@@ -80,7 +80,7 @@ const Highlights = props => {
     if (
       productName.trim().length === 0 ||
       productPrice < 0 ||
-      category < 0 ||
+      category.trim().length === 0 ||
       id < 0 ||
       buisness < 0 ||
       city < 0

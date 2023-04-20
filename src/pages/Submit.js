@@ -4,7 +4,8 @@ import styles from '../pages/Home.module.css';
 const Submit = () => {
   return (
     <div className={style.container}>
-      <h1>Data posted successfully</h1>
+      <br />
+      <h1>Product added successfully</h1>
       <br />
       <Link
         id={styles.anchor}
