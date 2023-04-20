@@ -29,6 +29,7 @@
 .logincontainer .error,
 .logincontainer .error:focus {
   border-bottom: 2px solid rgb(230, 32, 32);
+  /* color: red; */
 }
 
 .puff-in-center {

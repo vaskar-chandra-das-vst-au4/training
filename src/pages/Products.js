@@ -1,77 +1,48 @@
-import { useEffect } from 'react';
-import HttpClient from '../utils/HttpClient';
+import { useEffect, useState } from 'react';
+// import HttpClient from '../utils/HttpClient';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { MDBDataTable } from 'mdbreact';
+import 'bootstrap/dist/css/bootstrap.min.css'; // it must be imported somewhere in our code base
+import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 
 const Products = () => {
+  const [pdts, setPdts] = useState([
+    {
+      Name: 'Loading...',
+      Price: 'Loading...',
+      Image: 'Loading...',
+      AddedOn: 'Loading...',
+      Category: 'Loading...',
+    },
+  ]);
+
   useEffect(() => {
-    const id = localStorage.getItem('id');
-    const data = {
-      owner_id: +id,
-    };
     const fetchPdts = async () => {
-      const res = await HttpClient.requestData(
-        'product/fetch-vproduct',
-        'POST',
-        data
+      const res = await fetch(
+        'https://training-d4b60-default-rtdb.firebaseio.com/products.json'
       );
-      console.log(res.data);
+      const data = await res.json();
+
+      const products = Object.values(data).map(item => {
+        let addedDate = new Date(item.date);
+        let formattedDate = new Intl.DateTimeFormat(navigator.language, {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit',
+        }).format(addedDate);
+        return {
+          Name: item.name,
+          Price: item.price,
+          Image: <img src={item.img} alt="images" height="50px" width="70px" />,
+          AddedOn: formattedDate,
+        };
+      });
+
+      setPdts(products);
     };
     fetchPdts();
   }, []);
 
-  const data = {
-    columns: [
-      {
-        label: 'Name',
-        field: 'Name',
-        sort: 'asc',
-        width: 150,
-      },
-      {
-        label: 'Price',
-        field: 'Price',
-        sort: 'asc',
-        width: 100,
-      },
-      {
-        label: 'Image',
-        field: 'Image',
-        width: 200,
-      },
-      {
-        label: 'AddedOn',
-        field: 'AddedOn',
-        sort: 'asc',
-        width: 100,
-      },
-      {
-        label: 'Category',
-        field: 'Category',
-        sort: 'asc',
-        width: 150,
-      },
-    ],
-    rows: [
-      {
-        Name: 'Laptop',
-        Price: 30000,
-        Image: (
-          <img
-            src="https://testdadfile.s3.us-east-1.amazonaws.com/product/60c62db0-deb9-11ed-a44d-17028cd7da50.jpg"
-            alt="images"
-            height="50px"
-            width="50px"
-          />
-        ),
-        AddedOn: '2011/04/25',
-        Category: 'Electronics',
-      },
-    ],
-  };
   return (
     <>
       <div className={`${styles.productContainer} ${styles['text-focus-in']}`}>
@@ -83,8 +54,30 @@ const Products = () => {
             Go Back
           </Link>
         </button>
+
         <div className="container">
-          <MDBDataTable striped bordered small data={data} />
+          <MDBTable>
+            <MDBTableHead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Image</th>
+                <th scope="col">AddedOn</th>
+              </tr>
+            </MDBTableHead>
+            <MDBTableBody>
+              {pdts.map((product, i) => {
+                return (
+                  <tr key={i}>
+                    <th scope="row">{product.Name}</th>
+                    <td>{product.Price}</td>
+                    <td>{product.Image}</td>
+                    <td>{product.AddedOn}</td>
+                  </tr>
+                );
+              })}
+            </MDBTableBody>
+          </MDBTable>
         </div>
       </div>
     </>

@@ -7,6 +7,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 const Home = () => {
   // ~ states
+  const [hasError, setHasError] = useState(false);
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState([]);
   const [buisness, setBuisness] = useState([]);
@@ -26,6 +27,9 @@ const Home = () => {
   const [listRef] = useAutoAnimate();
 
   const navigate = useNavigate();
+
+  // ! Error handler
+  const errorHandler = status => setHasError(status);
 
   //! Logout handler
   const logoutHandler = e => {
@@ -70,7 +74,7 @@ const Home = () => {
         'POST',
         data
       );
-      // console.log(result.url);
+      console.log(result.url);
       setImages(prevstate => [...prevstate, result.url]);
     };
     e.target.value = '';
@@ -151,7 +155,7 @@ const Home = () => {
     <>
       <div className={styles.maincontainer}>
         <br />
-        <h1 className={styles['tracking-in-expand']}>Home Page</h1>
+        <h1 className={styles['tracking-in-expand']}>Home</h1>
         <p className={styles['text-focus-in']}>
           In publishing and graphic design, Lorem ipsum is a placeholder text
           commonly used to demonstrate the visual form of a document or a
@@ -175,6 +179,11 @@ const Home = () => {
         <hr className={styles['text-focus-in']} />
         <form className={styles['text-focus-in']}>
           <h1>Add a Product</h1>
+          {hasError && (
+            <p className={styles.error}>
+              Please fill all fields before submitting...
+            </p>
+          )}
           <div className={styles.categoryContainer}>
             {/* Category */}
             <div className={styles.c1}>
@@ -235,13 +244,23 @@ const Home = () => {
           <div>
             <label htmlFor="pdtname">Product Name</label>
             <br></br>
-            <input id="pdtname" type="text" ref={pdtName} />
+            <input
+              placeholder="Put product name..."
+              id="pdtname"
+              type="text"
+              ref={pdtName}
+            />
           </div>
           {/* PRODUCT PRICE */}
           <div>
             <label htmlFor="pdtprice">Product Price</label>
             <br></br>
-            <input id="pdtprice" type="number" ref={pdtPrice} />
+            <input
+              placeholder="Put product price..."
+              id="pdtprice"
+              type="number"
+              ref={pdtPrice}
+            />
           </div>
           {/* IMAGES */}
           <div>
@@ -273,7 +292,7 @@ const Home = () => {
           </div>
           <label>Highlights</label>
           <br></br>
-          <Highlights parentData={passParentData} />
+          <Highlights parentData={passParentData} hasError={errorHandler} />
         </form>
       </div>
     </>

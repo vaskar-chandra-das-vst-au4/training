@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Protected from './pages/Protected';
 import Submit from './pages/Submit';
 import Products from './pages/Products';
+
 const router = createBrowserRouter([
   {
     path: '/',

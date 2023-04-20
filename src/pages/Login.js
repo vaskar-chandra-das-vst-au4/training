@@ -55,9 +55,12 @@ const Login = () => {
       <br />
       <h1>Login Credentials</h1>
       <br />
-      <label htmlFor="email">Email</label>
+      <label className={emailError ? `${styles.error}` : ''} htmlFor="email">
+        Email
+      </label>
       {emailError && <p>Email must contain "@"</p>}
       <input
+        placeholder="Put your email here..."
         onChange={emailHandler}
         value={email}
         id="email"
@@ -65,9 +68,15 @@ const Login = () => {
         type="email"
       />
 
-      <label htmlFor="password">Password</label>
+      <label
+        className={passwordError ? `${styles.error}` : ''}
+        htmlFor="password"
+      >
+        Password
+      </label>
       {passwordError && <p>Password must contain more than 4 character</p>}
       <input
+        placeholder="Put your password here..."
         onChange={passwordHandler}
         value={password}
         className={passwordError ? `${styles.error}` : ''}

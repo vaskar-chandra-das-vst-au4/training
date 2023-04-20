@@ -24,6 +24,6 @@ code {
 }
 
 ::selection {
-  /* color: red; */
+  /* color: rgb(255, 255, 255); */
   background: #ffd43b;
 }
